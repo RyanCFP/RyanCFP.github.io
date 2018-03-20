@@ -270,7 +270,7 @@
   
     <div class="article-meta">
       <a href="/2018/03/20/Git Web端gerrit代码服务器搭建/" class="article-date">
-      <time datetime="2018-03-20T10:23:56.386Z" itemprop="datePublished">2018-03-20</time>
+      <time datetime="2018-03-20T10:39:56.330Z" itemprop="datePublished">2018-03-20</time>
 </a>
 
 
@@ -295,79 +295,127 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><center><font color="grey" size="5"><strong>Git Web端gerrit代码服务器搭建</strong>（Ubuntu14.04）</font></center></p>
-<ul>
-<li><p>#####一、JDK安装#####</p>
-<h2 id="JDK环境变量直接放在-etc-profile"><a href="#JDK环境变量直接放在-etc-profile" class="headerlink" title=" JDK环境变量直接放在/etc/profile"></a> <strong>JDK环境变量直接放在/etc/profile</strong></h2> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export  JAVA_HOME = JDK Path</span><br><span class="line">export  JRE_HOME = JRE Path</span><br><span class="line">export CLASSPATH = .:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib:$CLASSPATH</span><br><span class="line">export PATH = $PATH:$&#123;JAVA_HOME&#125;/bin:$&#123;JRE_HOME&#125;/bin</span><br></pre></td></tr></table></figure>
-<hr>
+        <ul>
+<li><p>一、JDK安装<br> <strong>JDK环境变量直接放在/etc/profile</strong></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export  JAVA_HOME = JDK Path</span><br><span class="line">export  JRE_HOME = JRE Path</span><br><span class="line">export CLASSPATH = .:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib:$CLASSPATH</span><br><span class="line">export PATH = $PATH:$&#123;JAVA_HOME&#125;/bin:$&#123;JRE_HOME&#125;/bin</span><br></pre></td></tr></table></figure>
 <font color="red" size="2" face="黑体"><strong>注意:</strong>  如果JDK环境变量放在/etc/environment的话，当切换用户到su - gerrit时很容易出现JDK没有安装，此时Gerrit服务器端将无法安装。<br>                Ubuntu系统先~/.bashrc，在/etc/profile，在/etc/environment<br></font>
 </li>
-<li><p>#####二、Git client 端安装配置（for ubuntu)#####</p>
+<li><p>二、Git client 端安装配置（for ubuntu)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo  apt-get update</span><br><span class="line">sudo apt-get install git-core</span><br><span class="line">git config --global user.name XX.XX.XX</span><br><span class="line">git config --global user.email XX@XX.com</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<hr>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo  apt-get update</span><br><span class="line">sudo apt-get install git-core</span><br><span class="line">git config --global user.name XX.XX.XX</span><br><span class="line">git config --global user.email XX@XX.com</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="注意-Client端的user-name、user-email必须与服务器端一致"><a href="#注意-Client端的user-name、user-email必须与服务器端一致" class="headerlink" title="  注意:  Client端的user.name、user.email必须与服务器端一致"></a>  <font color="red" size="2" face="黑体"><strong>注意:</strong>  Client端的user.name、user.email必须与服务器端一致</font></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor vim(可忽略）</span><br><span class="line">git config --global merge.tool vimdiff(可忽略）</span><br><span class="line">git config --global color.ui true(可忽略）</span><br><span class="line">git config --global color.status true(可忽略）</span><br><span class="line">git config --global color.interactive true(可忽略）</span><br><span class="line">git config --global color.diff true(可忽略）</span><br><span class="line">git config --global color.branch true(可忽略）</span><br></pre></td></tr></table></figure>
-<hr>
+  <font color="red" size="2" face="黑体"><strong>注意:</strong>  Client端的user.name、user.email必须与服务器端一致</font>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor vim(可忽略）</span><br><span class="line">git config --global merge.tool vimdiff(可忽略）</span><br><span class="line">git config --global color.ui true(可忽略）</span><br><span class="line">git config --global color.status true(可忽略）</span><br><span class="line">git config --global color.interactive true(可忽略）</span><br><span class="line">git config --global color.diff true(可忽略）</span><br><span class="line">git config --global color.branch true(可忽略）</span><br></pre></td></tr></table></figure>
 <ul>
-<li><font size="4"><strong>三、 安装及启动Apache2 </strong></font><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------------- </span><br><span class="line">sudo apt install apache2  apache2-utils apache2-doc</span><br><span class="line">sudo htpasswd -cm xx/gerrit.passwords(任意位置)</span><br><span class="line">--------------------------------------------</span><br></pre></td></tr></table></figure>
+<li><font size="4"><strong>三、 安装及启动Apache2 </strong></font><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">sudo apt install apache2  apache2-utils apache2-doc</span><br><span class="line">sudo htpasswd -cm xx/gerrit.passwords(任意位置)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <blockquote>
 <ul>
 <li><strong>开启SSL、Proxy、Rewrite等模块： </strong><font color="blue"><br>cd /etc/apache2/mods-enabled<br>sudo ln -s ../mods-available/proxy.load<br>sudo ln -s ../mods-available/proxy.conf<br>sudo ln -s ../mods-available/proxy_http.load<br>sudo ln -s ../mods-available/proxy_balancer.conf<br>sudo ln -s ../mods-available/proxy_balancer.load<br>sudo ln -s ../mods-available/rewrite.load<br>sudo ln -s ../mods-available/ssl.conf<br>sudo ln -s ../mods-available/ssl.load<br>sudo ln -s ../mods-available/socache_shmcb.load #<br>sudo ln -s ../mods-available/slotmem_shm.load #<br></font></li>
-<li><strong>设置代理账号配置文件</strong><br><font color="blue"><br>sudo vi /etc/apache2/sites-available/gerrit-httpd.conf<br>cd /etc/apache2/sites-enabled/<br>sudo ln ../sites-available/gerrit-httpd.conf<br></font><br><font color="red">gerrit-httpd.conf文本内容如下:</font><br>——————————————————————————————————————————————– <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> ServerName ip    </span><br><span class="line"> &lt;VirtualHost *:port&gt;</span><br><span class="line">    ProxyRequests Off</span><br><span class="line">           ProxyVia Off</span><br><span class="line">           ProxyPreserveHost On</span><br><span class="line">           RewriteEngine On</span><br><span class="line">           RewriteRule ^/(.*) http://ip:port/$1 [NE,P]</span><br><span class="line">       &lt;Proxy *&gt;</span><br><span class="line">         Order deny,allow</span><br><span class="line">         Allow from all</span><br><span class="line">       &lt;/Proxy&gt;</span><br><span class="line">       &lt;Location /login/&gt;</span><br><span class="line">         AuthType Basic</span><br><span class="line">         AuthName &quot;Gerrit Code Review&quot;</span><br><span class="line">         Require valid-user</span><br><span class="line">         AuthBasicProvider file</span><br><span class="line">         AuthUserFile **/gerrit.passwords</span><br><span class="line">       &lt;/Location&gt;</span><br><span class="line">         AllowEncodedSlashes On</span><br><span class="line">         ProxyPass / http://ip:port/</span><br><span class="line">        #ProxyPassReverse / http://ip:port/</span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line">```------------------------------------------------------------------------------------------------------------------------------------- </span><br><span class="line"> &gt;- **设置代理账号端口文件**</span><br></pre></td></tr></table></figure></li>
+<li><strong>设置代理账号配置文件</strong><font color="blue"><br>sudo vi /etc/apache2/sites-available/gerrit-httpd.conf<br>cd /etc/apache2/sites-enabled/<br>sudo ln ../sites-available/gerrit-httpd.conf<br></font><br><font color="red">gerrit-httpd.conf文本内容如下:</font>
+</li>
 </ul>
 </blockquote>
-<p>  cd /etc/apache2<br>  ls<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;font color=red&gt;ports.conf文件增加以下两行:&lt;/font&gt;</span><br></pre></td></tr></table></figure></p>
-<p> Listen 80<br> Listen port<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;- **启动、停止**</span><br></pre></td></tr></table></figure></p>
-<p>   sudo /etc/init.d/apache2 start/stop<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &lt;font size=4&gt;**四、Git Web端安装配置**&lt;/font&gt;</span><br><span class="line">   </span><br><span class="line">  &amp;nbsp; **1. 下载gerrit**</span><br></pre></td></tr></table></figure></p>
-<pre><code>https://gerrit-releases.storage.googleapis.com/gerrit-2.11.5.war
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;nbsp;**2.管理帐户(可忽略)**</span><br></pre></td></tr></table></figure>
-</code></pre><p>  sudo adduser gerrit<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;- 对账户授权</span><br></pre></td></tr></table></figure></p>
-<pre><code>  chmod u+w /etc/sudoers
-  sudo vi /etc/sudoers
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;- 添加下面一行</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> ServerName ip    </span><br><span class="line"> &lt;VirtualHost *:port&gt;</span><br><span class="line">    ProxyRequests Off</span><br><span class="line">           ProxyVia Off</span><br><span class="line">           ProxyPreserveHost On</span><br><span class="line">           RewriteEngine On</span><br><span class="line">           RewriteRule ^/(.*) http://ip:port/$1 [NE,P]</span><br><span class="line">       &lt;Proxy *&gt;</span><br><span class="line">         Order deny,allow</span><br><span class="line">         Allow from all</span><br><span class="line">       &lt;/Proxy&gt;</span><br><span class="line">       &lt;Location /login/&gt;</span><br><span class="line">         AuthType Basic</span><br><span class="line">         AuthName &quot;Gerrit Code Review&quot;</span><br><span class="line">         Require valid-user</span><br><span class="line">         AuthBasicProvider file</span><br><span class="line">         AuthUserFile **/gerrit.passwords</span><br><span class="line">       &lt;/Location&gt;</span><br><span class="line">         AllowEncodedSlashes On</span><br><span class="line">         ProxyPass / http://ip:port/</span><br><span class="line">        #ProxyPassReverse / http://ip:port/</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><strong>设置代理账号端口文件</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<font color="red">ports.conf文件增加以下两行:</font>
 
-gerrit ALL=(ALL) ALL
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;nbsp;**3.切换gerrit**</span><br></pre></td></tr></table></figure>
-</code></pre><p>  su - gerrit<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;nbsp;**4.安装gerrit**</span><br></pre></td></tr></table></figure></p>
-<p>   java -jar gerrit-2.12.2.war init –batch -d ryan_sites<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;nbsp;**5.安装gitweb**</span><br></pre></td></tr></table></figure></p>
-<p> sudo apt-get install gitweb<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&amp;nbsp;**6.配置**</span><br><span class="line">&lt;blockquote&gt;&lt;font color=blue&gt;编辑etc/gerrit.conf、etc/secure.conf&lt;/font&gt;</span><br><span class="line">  &gt; &gt;- &lt;font color=red&gt;gerrit-httpd.conf文本内容如下:&lt;/font&gt;</span><br><span class="line">  </span><br><span class="line">  &gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
-<pre><code>[gerrit]
-    basePath = git
-serverId = 5cd2afea-e6fc-4458-b0bf-8cbea99339ed
-canonicalWebUrl = http://ip：port/
-[database]
-type = h2
-database = /home/gerrit/gerrit/ryan_sites/db/ReviewDB
-[index]
-type = LUCENE
-[auth]
-type = HTTP
-[receive]
-    enableSignedPush = false
-[sendemail]
-enable = true
-    smtpServer = ***
-    smtpUser = ***
-    smtpPass = ***
-    smtpServerPort = 25
-</code></pre><p>   [container]<br>    user = gerrit<br>    javaHome = *<em>/jdk1.8.0_152/jre<br>   [sshd]<br>    listenAddress = </em>:29418<br>   [httpd]<br>    listenUrl = proxy-http://*:port/<br>   [cache]<br>    directory = cache<br>   [plugins]<br>    allowRemoteAdmin = true<br>   [gitweb]<br>        type = gitweb<br>        cgi = /usr/lib/cgi-bin/gitweb.cgi<br>     <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">&gt; &gt;- &lt;font color=red&gt;secure.conf文本内容如下:&lt;/font&gt;</span><br><span class="line">   </span><br><span class="line">  &gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
-<pre><code> [auth]
-registerEmailPrivateKey = 邮箱IMTP秘钥
- [sendemail]
-    smtpPass = 邮箱IMTP秘钥授权密码
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">   </span><br><span class="line">&amp;nbsp;**7.启动**</span><br></pre></td></tr></table></figure>
-</code></pre><p>   bin/gerrit.sh start/stop/restart<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- &lt;font size=4&gt;**五、Web端配置**&lt;/font&gt;</span><br><span class="line">&gt; 1.Git本地用户Config</span><br></pre></td></tr></table></figure></p>
-<p>   git config –global user.name xx.xx.xx<br>   git config –global user.email  <a href="mailto:xx@xx.com" target="_blank" rel="noopener">xx@xx.com</a><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;2.Git SSH连接秘钥生成</span><br></pre></td></tr></table></figure></p>
-<p>   ssh-keygen -t rsa<br>  复制ssh rsa.pub到SSH public key<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;3.打开浏览器，输入git服务器端界面url，如下：</span><br></pre></td></tr></table></figure></p>
-<p>  ip：port<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  ![Web端展示页面](//img-blog.csdn.net/20180320173305214?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)</span><br><span class="line"></span><br><span class="line">  &gt;4.在Web页面，点击Setting界面，如下:</span><br><span class="line">    ![这里写图片描述](//img-blog.csdn.net/20180320173432607?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)</span><br><span class="line"></span><br><span class="line">  &gt;5.在setting界面的左侧栏,点击Contact Info,输入邮箱：</span><br><span class="line">  ![这里写图片描述](//img-blog.csdn.net/20180320173511183?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)</span><br><span class="line"></span><br><span class="line">  &gt;6.在setting界面的左侧栏,点击SSH Public Keys,输入以上步骤中产生的SSH秘钥:</span><br><span class="line">  ![这里写图片描述](//img-blog.csdn.net/20180320173602435?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)</span><br><span class="line"></span><br><span class="line">- &lt;font size=4&gt;**六、测试连接**&lt;/font&gt;</span><br></pre></td></tr></table></figure></p>
-<pre><code>  ssh -p 29418 fullname@ip
-  ```
-当出现 gerrit 的Welcome fullname时代表连接成功。
-</code></pre>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Listen 80</span><br><span class="line">Listen port</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><strong>启动、停止</strong> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/apache2 start/stop</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><font size="4"><strong>四、Git Web端安装配置</strong></font>
+
+<p>&nbsp; <strong>1. 下载gerrit</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://gerrit-releases.storage.googleapis.com/gerrit-2.11.5.war</span><br></pre></td></tr></table></figure>
+<p> &nbsp;<strong>2.管理帐户(可忽略)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser gerrit</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>对账户授权<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod u+w /etc/sudoers</span><br><span class="line">sudo vi /etc/sudoers</span><br></pre></td></tr></table></figure>
+</code></pre></li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>添加下面一行  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gerrit ALL=(ALL) ALL</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>&nbsp;<strong>3.切换gerrit</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - gerrit</span><br></pre></td></tr></table></figure></p>
+<p>  &nbsp;<strong>4.安装gerrit</strong><br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar gerrit-2.12.2.war init --batch -d ryan_sites</span><br></pre></td></tr></table></figure></p>
+<p> &nbsp;<strong>5.安装gitweb</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gitweb</span><br></pre></td></tr></table></figure></p>
+<p> &nbsp;<strong>6.配置</strong><br> <blockquote><font color="blue">编辑etc/gerrit.conf、etc/secure.conf</font></blockquote></p>
+<blockquote>
+<blockquote>
+<ul>
+<li><font color="red">gerrit-httpd.conf文本内容如下:</font>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">   [gerrit]</span><br><span class="line">       basePath = git</span><br><span class="line">serverId = 5cd2afea-e6fc-4458-b0bf-8cbea99339ed</span><br><span class="line">canonicalWebUrl = http://ip：port/</span><br><span class="line">   [database]</span><br><span class="line">type = h2</span><br><span class="line">database = /home/gerrit/gerrit/ryan_sites/db/ReviewDB</span><br><span class="line">   [index]</span><br><span class="line">type = LUCENE</span><br><span class="line">   [auth]</span><br><span class="line">type = HTTP</span><br><span class="line">   [receive]</span><br><span class="line">       enableSignedPush = false</span><br><span class="line">   [sendemail]</span><br><span class="line">enable = true</span><br><span class="line">       smtpServer = ***</span><br><span class="line">       smtpUser = ***</span><br><span class="line">       smtpPass = ***</span><br><span class="line">       smtpServerPort = 25</span><br><span class="line">  [container]</span><br><span class="line">user = gerrit</span><br><span class="line">javaHome = **/jdk1.8.0_152/jre</span><br><span class="line">  [sshd]</span><br><span class="line">listenAddress = *:29418</span><br><span class="line">  [httpd]</span><br><span class="line">listenUrl = proxy-http://*:port/</span><br><span class="line">  [cache]</span><br><span class="line">directory = cache</span><br><span class="line">  [plugins]</span><br><span class="line">allowRemoteAdmin = true</span><br><span class="line">  [gitweb]</span><br><span class="line">       type = gitweb</span><br><span class="line">       cgi = /usr/lib/cgi-bin/gitweb.cgi</span><br></pre></td></tr></table></figure>
+</code></pre></blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<ul>
+<li><font color="red">secure.conf文本内容如下:</font>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<pre><code>&gt;&gt;&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    [auth]</span><br><span class="line">registerEmailPrivateKey = 邮箱IMTP秘钥</span><br><span class="line">    [sendemail]</span><br><span class="line">       smtpPass = 邮箱IMTP秘钥授权密码</span><br></pre></td></tr></table></figure>
+</code></pre><p>   &nbsp;<strong>7.启动</strong><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/gerrit.sh start/stop/restart</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><font size="4"><strong>五、Web端配置</strong></font></p>
+<blockquote>
+<p>1.Git本地用户Config</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name xx.xx.xx</span><br><span class="line">git config --global user.email  xx@xx.com</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>2.Git SSH连接秘钥生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> ssh-keygen -t rsa</span><br><span class="line">复制ssh rsa.pub到SSH public key</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>3.打开浏览器，输入git服务器端界面url，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip：port</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="//img-blog.csdn.net/20180320173305214?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="Web端展示页面"></p>
+<blockquote>
+<p>4.在Web页面，点击Setting界面，如下:<br>  <img src="//img-blog.csdn.net/20180320173432607?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+</blockquote>
+<blockquote>
+<p>5.在setting界面的左侧栏,点击Contact Info,输入邮箱：<br><img src="//img-blog.csdn.net/20180320173511183?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+</blockquote>
+<blockquote>
+<p>6.在setting界面的左侧栏,点击SSH Public Keys,输入以上步骤中产生的SSH秘钥:<br><img src="//img-blog.csdn.net/20180320173602435?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L3J5YW5fY2hhbjAxMjEy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+</blockquote>
+</li>
+<li><p><font size="4"><strong>六、测试连接</strong></font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 29418 fullname@ip</span><br></pre></td></tr></table></figure>
+<p>   当出现 gerrit 的Welcome fullname时代表连接成功。</p>
+</li>
+</ul>
+
       
     </div>
     
